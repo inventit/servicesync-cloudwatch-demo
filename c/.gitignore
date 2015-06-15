@@ -18,7 +18,6 @@ docs/html/*
 test/*/.app-id
 test/*/logging.conf
 test/*/package.json
-test/*/dominica.so
+test/*/sscw.so
 test/*/.moat_cmd_history
 test/*/.moat_ds
-
