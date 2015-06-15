@@ -21,7 +21,7 @@
 #include <servicesync/moat.h>
 
 #define TAG "SSCW"
-#define UPLOAD_INTERVAL (60) /* sec */
+#define UPLOAD_INTERVAL 60 /* sec */
 #define MODEL_NAME "SensingData"
 
 typedef struct {
@@ -130,14 +130,14 @@ moat_app_main(sse_int in_argc, sse_char *argv[])
         goto error_exit;
     }
     
-    /* set timer for monitoring cpu usage */
+    /* set timer for monitoring sensing data */
     //get_sensor_data(&(ctx->last), NULL); /* initialize last cpu count */
     timer = moat_timer_new();
     if (timer == NULL) {
         goto error_exit;
     }
     timer_id = moat_timer_set(timer,            /* Timer instance */
-                              3,                /* Interval sec   */
+                              UPLOAD_INTERVAL,  /* Interval sec   */
                               upload_sensor_data, /* Callback       */
                               ctx);             /* User data      */
     if (timer_id < 1) {
