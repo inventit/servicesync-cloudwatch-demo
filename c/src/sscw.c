@@ -20,7 +20,9 @@
 #include <string.h>
 #include <servicesync/moat.h>
 
-#define TAG "Sample"
+#define TAG "SSCW"
+
+#define UPLOAD_INTERVAL (60) /* sec */
 
 typedef struct {
   sse_int user;
@@ -65,7 +67,7 @@ get_cpu_usage(CpuTickCount* in_out_last, CpuUsage* out_cpu_usage)
 
   /* get cpu time with /proc/stat */
   if ((fp = fopen("/proc/stat", "r")) == NULL) {
-      return SSE_E_GENERIC;
+    return SSE_E_GENERIC;
   }
 
   while (fgets(buffer, sizeof(buffer)-1, fp) != NULL) {
@@ -74,26 +76,26 @@ get_cpu_usage(CpuTickCount* in_out_last, CpuUsage* out_cpu_usage)
       cpu  314136 1037 108491 39186689 31126 10 5968 0 0 0
       cpu0 81224 1034 32204 9760195 26228 10 5611 0 0 0
       ... (snip) ...
-     */
+    */
     for (count = 0, token = strtok_r(buffer, delim, &saveptr); token; token = strtok_r(NULL, delim, &saveptr)) {
       switch (count) {
       case 1: /* user */
-	current.user = sse_atoi(token);
-	break;
+        current.user = sse_atoi(token);
+        break;
       case 2: /* nice */
-	current.nice = sse_atoi(token);
-	break;
+        current.nice = sse_atoi(token);
+        break;
       case 3: /* system */
-	current.system = sse_atoi(token);
-	break;
+        current.system = sse_atoi(token);
+        break;
       case 4: /* idle */
-	current.idle = sse_atoi(token);
-	break;
+        current.idle = sse_atoi(token);
+        break;
       case 5: /* iowait */
-	current.iowait = sse_atoi(token);
-	break;
+        current.iowait = sse_atoi(token);
+        break;
       default:
-	; /* nothing to do */
+        ; /* nothing to do */
       }
       count++;      
     }
@@ -169,12 +171,12 @@ upload_cpu_usage(sse_int in_timer_id, sse_pointer in_user_data)
 
   snprintf(urn, sizeof(urn) - 1, "urn:moat:%s:upload-cpu-usage:1.0.0", moat_get_package_urn(ctx->moat));
   request_id = moat_send_notification(ctx->moat,                    /* Moat Instance */
-				      urn,                          /* URN */
-				      NULL,                         /* Key */
-				      "CpuUsage",                   /* Model name */
-				      object,                       /* Data collection */
-				      upload_cpu_usage_result_proc, /* Callback */
-				      ctx);                         /* User data */
+                                      urn,                          /* URN */
+                                      NULL,                         /* Key */
+                                      "CpuUsage",                   /* Model name */
+                                      object,                       /* Data collection */
+                                      upload_cpu_usage_result_proc, /* Callback */
+                                      ctx);                         /* User data */
   if (request_id < 0) {
     SSE_LOG_ERROR(TAG, "moat_send_notification() has failed with [%d].", request_id);
   }
@@ -205,9 +207,9 @@ moat_app_main(sse_int in_argc, sse_char *argv[])
   /* register models */
   sse_memset(&model_mapper, 0, sizeof(model_mapper));
   err = moat_register_model(moat,          /* MOAT instance */
-			    "CpuUsage",    /* Model name */
-			    &model_mapper, /* ModelMapper instance */
-			    ctx);          /* Context */
+                            "CpuUsage",    /* Model name */
+                            &model_mapper, /* ModelMapper instance */
+                            ctx);          /* Context */
   if (err != SSE_E_OK) {
     goto error_exit;
   }
@@ -219,9 +221,9 @@ moat_app_main(sse_int in_argc, sse_char *argv[])
     goto error_exit;
   }
   timer_id = moat_timer_set(timer,            /* Timer instance */
-			    3,                /* Interval sec   */
-			    upload_cpu_usage, /* Callback       */
-			    ctx);             /* User data      */
+                            UPLOAD_INTERVAL,  /* Interval sec   */
+                            upload_cpu_usage, /* Callback       */
+                            ctx);             /* User data      */
   if (timer_id < 1) {
     goto error_exit;
   }
