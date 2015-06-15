@@ -1,0 +1,41 @@
+{
+  "name": "sscw",
+  "version": "0.0.1",
+  "description": "ServiceSync CloudWatch demo project",
+  "maintainers": [{
+    "name": "Inventit",
+    "email": "egypt@yourinventit.com"
+  }],
+  "bugs": {
+    "mail": "egypt@yourinventit.com"
+  },
+  "dependencies": {
+    "moat": ">=1.0.0 <2.0.0"
+  }
+  , "devDependencies": {
+    "nodeunit": "*"
+    , "sinon": ">= 1.5.2"
+    , "grunt": "~0.4.5"
+    , "grunt-mocha-chai-sinon": "~0.0.8"
+    , "grunt-contrib-jshint": "~0.10.0"
+    , "grunt-contrib-uglify": "~0.6.0"
+    , "grunt-contrib-nodeunit": "~0.4.1"
+    , "grunt-jsdoc": "~0.5.7"
+    , "grunt-contrib-copy": "~0.7.0"
+    , "grunt-contrib-clean": "~0.6.0"
+  }
+  , "engines" : {
+    "moat-runtime" : ">=1.0.0 <2.0.0"
+  },
+  "private" : true,
+  "models": {
+    "SensingData": {
+      "array": true,
+      "attributes" : {
+        "temperature": {"type": "float"},
+        "humidity": {"type": "float"},
+        "timestamp": {"type": "string"}
+      }
+    }
+  }
+}
