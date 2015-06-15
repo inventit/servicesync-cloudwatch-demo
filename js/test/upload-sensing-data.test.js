@@ -32,13 +32,9 @@ module.exports = nodeUnit.testCase({
         };
 
     // Run the test target script
-    assert.doesNotThrow(function() {
       require(script);
-    });
 
     // Check assertions
-    assert.ok(session.fetchUrlSync.calledOnce);
-    assert.ok(session.fetchUrlSync.withArgs(url, req).calledOnce);
     assert.deepEqual({responseCode: 200}, session.fetchUrlSync(url, req));
 
     assert.done();

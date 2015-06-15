@@ -1,6 +1,6 @@
 {
   "name": "sscw",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "ServiceSync CloudWatch demo project",
   "maintainers": [
     "Inventit <egypt@yourinventit.com>"
@@ -33,7 +33,7 @@
   "main": "sscw.so",
   "models": {
     "SensingData": {
-      "array": true,
+      "array": false,
       "attributes": {
         "temperature": {
           "type": "float"

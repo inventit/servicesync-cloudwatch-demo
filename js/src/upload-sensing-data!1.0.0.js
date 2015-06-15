@@ -11,6 +11,10 @@ var moat = require('moat'),
     session = context.session,
     clientRequest = context.clientRequest;
 
+  session.log(TAG, 'Start!');
+  session.log(JSON.stringify(clientRequest.objects));
+
+/*
 var resp = session.fetchUrlSync('http://localhost', {
   method: 'POST',
   contentType: 'application/json',
@@ -22,7 +26,7 @@ if (parseInt(resp.responseCode / 100) === 2) {
 } else {
   throw 'Failed to post data: responseCode=' + resp.responseCode;
 }
-
+*/
 /**
  * Returns an ISO8601 formatted date string.
  * 
