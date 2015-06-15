@@ -22,3 +22,24 @@ if (parseInt(resp.responseCode / 100) === 2) {
 } else {
   throw 'Failed to post data: responseCode=' + resp.responseCode;
 }
+
+/**
+ * Returns an ISO8601 formatted date string.
+ * 
+ * @param d Date object to be parsed
+ * @return String ISO8601 formatted string
+ * @example
+ * isoDateString(new Date(1434368351767)) // 2015-06-15T11:39:11Z
+ */
+function isoDateString(d) {
+  function pad(n) {
+    return n < 10 ? '0' + n : n;
+  }
+  return d.getUTCFullYear() + 
+    '-' + pad(d.getUTCMonth()+1) + 
+    '-' + pad(d.getUTCDate()) + 
+    'T' + pad(d.getUTCHours()) + 
+    ':' + pad(d.getUTCMinutes()) + 
+    ':' + pad(d.getUTCSeconds()) + 
+    'Z';
+}
