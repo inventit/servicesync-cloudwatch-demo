@@ -19,7 +19,7 @@
       "attributes" : {
         "temperature": {"type": "float"},
         "humidity": {"type": "float"},
-        "timestamp": {"type": "string"}
+        "timestamp": {"type": "int64"}
       }
     }
   }
