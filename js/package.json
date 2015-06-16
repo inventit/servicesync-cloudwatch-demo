@@ -5,6 +5,9 @@
   "maintainers": [
     "Inventit <egypt@yourinventit.com>"
   ],
+  "bugs": {
+    "mail": "egypt@yourinventit.com"
+  },
   "repository": {
     "type": "git",
     "url": "git@bitbucket.org:inventit/servicesync-cloudwatch-demo.git"
