@@ -53,7 +53,6 @@ upload_sensor_data_result_proc(Moat in_moat, sse_char *in_urn, sse_char *in_mode
 
 
 static sse_bool
-
 upload_sensor_data(sse_int in_timer_id, sse_pointer in_user_data)
 {
     sse_int err;
@@ -80,15 +79,11 @@ upload_sensor_data(sse_int in_timer_id, sse_pointer in_user_data)
     moat_object_add_float_value(object, "humidity", sensor_data.humidity, sse_false);
     moat_object_add_int64_value(object, "timestamp", moat_get_timestamp_msec(), sse_false);
     
-    urn_err = snprintf(urn, sizeof(urn) - 1, "urn:moat:%s:upload-cpu-usage:1.0.0", moat_get_package_urn(ctx->moat));
+    urn_err = snprintf(urn, sizeof(urn) - 1, "urn:moat:%s:upload-sensing-data:1.0.0", moat_get_package_urn(ctx->moat));
     if(urn_err < 0)
     {
-        MOAT_LOG_ERROR(TAG, "Failed to get package urn from moat object.");
+        MOAT_LOG_ERROR(TAG, "urn is longer than expected. maximum urn size is %d.", siezeof(urn));
         return sse_true;
-    }
-    else if(urn_err != sizeof(urn))
-    {
-        MOAT_LOG_WARN(TAG, "urn info might be lacked. %d, %d",urn_err,sizeof(urn));
     }
     
     request_id = moat_send_notification(ctx->moat,                    /* Moat Instance */
