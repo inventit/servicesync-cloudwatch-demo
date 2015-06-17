@@ -58,7 +58,7 @@ module.exports = function(grunt) {
           ]
         },
         files: [
-          { expand: true, flatten: true, src: ['src/*.js'], dest: 'src' }
+          { expand: true, flatten: true, src: ['build/*.js'], dest: 'build' }
         ]
       }      
     },
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-replace');
 
-  grunt.registerTask('build', ['jshint', 'nodeunit', 'uglify', 'copy:pack']);
+  grunt.registerTask('build', ['jshint', 'nodeunit', 'uglify', 'copy:pack', 'replace']);
   grunt.registerTask('default', ['build', 'jsdoc']);
 
 };
