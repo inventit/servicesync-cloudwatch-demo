@@ -9,8 +9,8 @@ var TAG = 'upload-sensing-data';
 var moat = require('moat'),
     context = moat.init(),
     session = context.session,
-    clientRequest = context.clientRequest;
-    objects = clientRequest.objects;
+    clientRequest = context.clientRequest,
+    objects = clientRequest.objects,
     container = objects[0];
 
 var aws_endpoint = '@@AWS_ENDPOINT',
@@ -18,7 +18,7 @@ var aws_endpoint = '@@AWS_ENDPOINT',
     aws_secret_access_key = '@@AWS_SECRET_ACCESS_KEY';
 
 session.log(TAG, 'Start!');
-session.log(JSON.stringify(clientRequest.objects));
+session.log(TAG, JSON.stringify(clientRequest.objects));
 
 sendData2CloudWatch(aws_endpoint, aws_access_key_id, aws_secret_access_key);
 
@@ -44,7 +44,7 @@ function isoDateString(d) {
 }
 
 /**
- * Returns encoded URI string according to RFC3986
+ * Returns an encoded URI string according to RFC3986
  *
  * @param str String object to be encoded
  * @return String encoded in RFC3986
