@@ -13,8 +13,8 @@ var moat = require('moat'),
     var objects = clientRequest.objects;
     var container = objects[0];
 
-  session.log(TAG, 'Start!');
-  session.log(JSON.stringify(clientRequest.objects));
+    session.log(TAG, 'Start!');
+    session.log(JSON.stringify(clientRequest.objects));
 
 var aws_endpoint = '@@AWS_ENDPOINT',
     aws_access_key_id = '@@AWS_ACCESS_KEY_ID',
@@ -55,7 +55,6 @@ function sendData2CloudWatch(endpoint, access_id, secret_key)
      session.log(TAG,"ClouldWatch query Start!" );
      var timestamp = isoDateString(new Date(container.timestamp));     
 
-     //create Hash object
      var params = [
                    ["Action","PutMetricData"],
                    ["Namespace","SSCloudWatch"],
@@ -79,7 +78,6 @@ function sendData2CloudWatch(endpoint, access_id, secret_key)
                        ["MetricData.member.2.Dimensions.member.1.Value" , "test"]
                        ];
      
-     //params.merge(arg_params);
      for(var i=0; i< arg_params.length; i++){
          params.push(arg_params[i]);
      }
@@ -113,7 +111,6 @@ function sendData2CloudWatch(endpoint, access_id, secret_key)
          querystring += "&" +  params[l][1];
      }
      querystring = querystring.substr(1);
-     session.log(TAG,"querystring: " + querystring);
      
      var url_and_query = "https://" + endpoint + "/?" + querystring;
      session.log(TAG,"url_and_query: " + url_and_query);
