@@ -36,12 +36,12 @@ typedef struct {
 
 //Temperature is 0 - 40 degree C
 sse_float getTemperature(){
-  return rand()%40; 
+  return rand()%41; 
 }
 
 //Humidity is 0 - 100%
 sse_float getHumidity(){
-  return rand()%100;
+  return rand()%101;
 }
 
 static sse_int
@@ -142,7 +142,6 @@ moat_app_main(sse_int in_argc, sse_char *argv[])
     }
     
     /* set timer for monitoring sensing data */
-    //get_sensor_data(&(ctx->last), NULL); /* initialize last cpu count */
     timer = moat_timer_new();
     if (timer == NULL) {
         goto error_exit;
