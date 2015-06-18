@@ -36,22 +36,12 @@ typedef struct {
 
 //Temperature is 0 - 40 degree C
 sse_float getTemperature(){
-  sse_float t = 0;
-  sse_int i;
-  for(i = 0; i< 4; i++){ 
-    t += rand()%10; 
-  }
-  return t;
+  return rand()%40; 
 }
 
 //Humidity is 0 - 100%
 sse_float getHumidity(){
-  sse_float h = 0;
-  sse_int i;
-  for(i = 0; i< 10; i++){
-    h += rand()%10;
-  }
-  return h;
+  return rand()%100;
 }
 
 static sse_int
