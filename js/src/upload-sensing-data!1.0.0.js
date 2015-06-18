@@ -9,16 +9,22 @@ var TAG = 'upload-sensing-data';
 var moat = require('moat'),
     context = moat.init(),
     session = context.session,
-    clientRequest = context.clientRequest,
-    objects = clientRequest.objects,
-    container = objects[0];
+    clientRequest = context.clientRequest;
 
 var aws_endpoint = '@@AWS_ENDPOINT',
     aws_access_key_id = '@@AWS_ACCESS_KEY_ID',
     aws_secret_access_key = '@@AWS_SECRET_ACCESS_KEY';
 
 session.log(TAG, 'Start!');
-session.log(TAG, JSON.stringify(clientRequest.objects));
+
+var objects = clientRequest.objects;
+if (objects.length === 0) {
+  session.log('No objects are received');
+  throw "No objects are received!";
+}
+
+var datum = objects[0];
+session.log(TAG, JSON.stringify(datum));
 
 sendData2CloudWatch(aws_endpoint, aws_access_key_id, aws_secret_access_key);
 
@@ -58,25 +64,25 @@ function fixedEncodeURIComponent(str) {
 }
 
 function sendData2CloudWatch(endpoint, access_id, secret_key) {
-  var timestamp = isoDateString(new Date(container.timestamp));     
+  var timestamp = isoDateString(new Date(datum.timestamp));     
   var params = [
-    ["Action","PutMetricData"],
-    ["Namespace","SSCloudWatch"],
+    ["Action", "PutMetricData"],
+    ["Namespace", "SSCloudWatch"],
     ["AWSAccessKeyId", access_id],
     ["SignatureMethod", "HmacSHA256"],
     ["SignatureVersion", 2],
     ["Version", "2010-08-01"],
     ["Timestamp", timestamp],
-    ["MetricData.member.1.MetricName" , "temperature"],
-    ["MetricData.member.1.Unit" , "Count"],
-    ["MetricData.member.1.Value" , container.temperature],
-    ["MetricData.member.1.Dimensions.member.1.Name" , "Project"],
-    ["MetricData.member.1.Dimensions.member.1.Value" , "test"],
-    ["MetricData.member.2.MetricName" , "humidity"],
-    ["MetricData.member.2.Unit" , "Count"],
-    ["MetricData.member.2.Value" , container.humidity],
-    ["MetricData.member.2.Dimensions.member.1.Name" , "Project"],
-    ["MetricData.member.2.Dimensions.member.1.Value" , "test"]
+    ["MetricData.member.1.MetricName", "temperature"],
+    ["MetricData.member.1.Unit", "Count"],
+    ["MetricData.member.1.Value", datum.temperature],
+    ["MetricData.member.1.Dimensions.member.1.Name", "Project"],
+    ["MetricData.member.1.Dimensions.member.1.Value", "test"],
+    ["MetricData.member.2.MetricName", "humidity"],
+    ["MetricData.member.2.Unit", "Count"],
+    ["MetricData.member.2.Value", datum.humidity],
+    ["MetricData.member.2.Dimensions.member.1.Name", "Project"],
+    ["MetricData.member.2.Dimensions.member.1.Value", "test"]
   ];
   
   params.forEach(function(element, index) {
@@ -91,18 +97,18 @@ function sendData2CloudWatch(endpoint, access_id, secret_key) {
     canonical_querystring += '&' + element[1];
   });
   
-  //Remove redundant initial '&'
-  canonical_querystring =  canonical_querystring.substr(1);
+  // Remove redundant initial '&'
+  canonical_querystring = canonical_querystring.substr(1);
   
-  var string_to_sign = "GET"+"\n" + endpoint +"\n" + "/" + "\n" + canonical_querystring;
-  var signature_hex = session.hmac('SHA256','plain',secret_key,string_to_sign);
+  var string_to_sign = "GET" + "\n" + endpoint + "\n" + "/" + "\n" + canonical_querystring;
+  var signature_hex = session.hmac('SHA256', 'plain', secret_key, string_to_sign);
   var signature = session.hex2b64(signature_hex);
   
-  //Add signature into params
+  // Add signature into params
   params.push(["Signature", "Signature=" + fixedEncodeURIComponent(signature)]);
   params.sort();
   
-  //Generagte querystring
+  // Generagte querystring
   var querystring = "";
   params.forEach(function(element, index) {
     querystring += '&' + element[1];
@@ -112,9 +118,8 @@ function sendData2CloudWatch(endpoint, access_id, secret_key) {
   var url_and_query = "https://" + endpoint + "/?" + querystring;
   session.log(TAG,"url_and_query: " + url_and_query);
   
-  //HTTP Access
+  // HTTP Access
   var resp = session.fetchUrlSync(url_and_query, {method: 'GET'});
-  
   if (parseInt(resp.responseCode / 100) === 2) {
     session.log(TAG, 'Success!');
   } else {
