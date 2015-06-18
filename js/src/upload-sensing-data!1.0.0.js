@@ -35,7 +35,7 @@ function isoDateString(d) {
     return n < 10 ? '0' + n : n;
   }
   return d.getUTCFullYear() + 
-    '-' + pad(d.getUTCMonth()+1) + 
+    '-' + pad(d.getUTCMonth() + 1) + 
     '-' + pad(d.getUTCDate()) + 
     'T' + pad(d.getUTCHours()) + 
     ':' + pad(d.getUTCMinutes()) + 
@@ -45,9 +45,9 @@ function isoDateString(d) {
 
 /**
  * Returns an encoded URI string according to RFC3986
- * Reference URL
- * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent#Description
+ * 
  * @return String encoded in RFC3986
+ * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent#Description
  * @example
  * fixedEncodeURIComponent('foo @+%/') // foo%20%40%2B%25%2F
  */
