@@ -4,7 +4,7 @@
   "description" : "ServiceSync CloudWatch demo project",
   "maintainers" : [{
     "name" : "Inventit",
-    "email" : "egypt@yourinventit.com"
+    "mail" : "egypt@yourinventit.com"
   }],
   "bugs" : {
     "mail" : "egypt@yourinventit.com"

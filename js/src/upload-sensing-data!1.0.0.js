@@ -10,6 +10,8 @@ var moat = require('moat'),
     context = moat.init(),
     session = context.session,
     clientRequest = context.clientRequest;
+    var objects = clientRequest.objects;
+    var container = objects[0];
 
   session.log(TAG, 'Start!');
   session.log(JSON.stringify(clientRequest.objects));
@@ -51,7 +53,7 @@ function encodeURIComponent_RFC3986(str) {
 function sendData2CloudWatch(endpoint, access_id, secret_key)
  {
      session.log(TAG,"ClouldWatch query Start!" );
-     var timestamp = isoDateString(new Date());     
+     var timestamp = isoDateString(new Date(container.timestamp));     
 
      //create Hash object
      var params = [
@@ -67,12 +69,12 @@ function sendData2CloudWatch(endpoint, access_id, secret_key)
      var arg_params = [
                        ["MetricData.member.1.MetricName" , "temperature"],
                        ["MetricData.member.1.Unit" , "Count"],
-                       ["MetricData.member.1.Value" , 23.5],
+                       ["MetricData.member.1.Value" , container.temperature],
                        ["MetricData.member.1.Dimensions.member.1.Name" , "Project"],
                        ["MetricData.member.1.Dimensions.member.1.Value" , "test"],
                        ["MetricData.member.2.MetricName" , "humidity"],
                        ["MetricData.member.2.Unit" , "Count"],
-                       ["MetricData.member.2.Value" , 80.5],
+                       ["MetricData.member.2.Value" , container.humidity],
                        ["MetricData.member.2.Dimensions.member.1.Name" , "Project"],
                        ["MetricData.member.2.Dimensions.member.1.Value" , "test"]
                        ];

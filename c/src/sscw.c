@@ -17,11 +17,12 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <servicesync/moat.h>
 
 #define TAG "SSCW"
-#define UPLOAD_INTERVAL 60 /* sec */
+#define UPLOAD_INTERVAL (60) /* sec */
 #define MODEL_NAME "SensingData"
 
 typedef struct {
@@ -33,11 +34,31 @@ typedef struct {
     Moat moat;
 } UserContext;
 
+//Temperature is 0 - 40 degree C
+sse_float getTemperature(){
+  sse_float t = 0;
+  sse_int i;
+  for(i = 0; i< 4; i++){ 
+    t += rand()%10; 
+  }
+  return t;
+}
+
+//Humidity is 0 - 100%
+sse_float getHumidity(){
+  sse_float h = 0;
+  sse_int i;
+  for(i = 0; i< 10; i++){
+    h += rand()%10;
+  }
+  return h;
+}
+
 static sse_int
 get_sensor_data(SensingData* out_sensor_data)
 {
-    out_sensor_data->temperature = 100.0f;
-    out_sensor_data->humidity = 100.0f;
+    out_sensor_data->temperature = getTemperature();
+    out_sensor_data->humidity = getHumidity();
     return SSE_E_OK;
 }
 
@@ -80,10 +101,10 @@ upload_sensor_data(sse_int in_timer_id, sse_pointer in_user_data)
     moat_object_add_int64_value(object, "timestamp", moat_get_timestamp_msec(), sse_false);
     
     urn_err = snprintf(urn, sizeof(urn) - 1, "urn:moat:%s:upload-sensing-data:1.0.0", moat_get_package_urn(ctx->moat));
-    if(urn_err < 0)
+    if(urn_err < 0 || urn_err >= sizeof(urn))
     {
-        MOAT_LOG_ERROR(TAG, "urn is longer than expected. maximum urn size is %d.", siezeof(urn));
-        return sse_true;
+        MOAT_LOG_ERROR(TAG, "urn is unexpected size. maximum urn size is %d.", siezeof(urn));
+        return sse_false;
     }
     
     request_id = moat_send_notification(ctx->moat,                    /* Moat Instance */
