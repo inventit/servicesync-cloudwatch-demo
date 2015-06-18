@@ -43,7 +43,14 @@ function isoDateString(d) {
     'Z';
 }
 
-/* Returns encoded URI string according to RFC3986*/
+/**
+ * Returns encoded URI string according to RFC3986
+ *
+ * @param str String object to be encoded
+ * @return String encoded in RFC3986
+ * @example
+ * encodeURIComponent_RFC3986('foo @+%/') // foo%20%40%2B%25%2F
+ */
 function encodeURIComponent_RFC3986(str) {
   return encodeURIComponent(str).replace(/[!'()*]/g, function(c) {
     return '%' + c.charCodeAt(0).toString(16);
