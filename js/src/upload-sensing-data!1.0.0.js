@@ -86,7 +86,7 @@ function sendData2CloudWatch(endpoint, access_id, secret_key) {
   });    
   params.sort();
   
-  canonical_querystring = "";
+  var canonical_querystring = "";
   params.forEach(function(element, index) {
     canonical_querystring += '&' + element[1];
   });
