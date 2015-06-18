@@ -58,9 +58,7 @@
   }
   
   function sendData2CloudWatch(endpoint, access_id, secret_key) {
-      session.log(TAG,"ClouldWatch query Start!" );
       var timestamp = isoDateString(new Date(container.timestamp));     
-  
       var params = [
                      ["Action","PutMetricData"],
                      ["Namespace","SSCloudWatch"],
@@ -86,7 +84,6 @@
         element[1] = fixedEncodeURIComponent(element[1]);
         element[1] = element.join('=');
       });    
-  
       params.sort();
       
       canonical_querystring = "";
@@ -121,8 +118,6 @@
       if (parseInt(resp.responseCode / 100) === 2) {
         session.log(TAG, 'Success!');
       } else {
-        throw 'Failed to upload data: responseCode=' + resp.responseCode + ': Content =  ' + resp.content;
+        throw 'Failed to upload data: responseCode=' + resp.responseCode;
       }
-  
-      session.log(TAG,"CloudWatch query End.");
   }  
