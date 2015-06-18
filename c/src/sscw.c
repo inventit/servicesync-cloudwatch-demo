@@ -34,21 +34,15 @@ typedef struct {
     Moat moat;
 } UserContext;
 
-//Temperature is 0 - 40 degree C
-sse_float getTemperature(){
-  return rand()%41; 
-}
-
-//Humidity is 0 - 100%
-sse_float getHumidity(){
-  return rand()%101;
-}
-
 static sse_int
 get_sensor_data(SensingData* out_sensor_data)
 {
-    out_sensor_data->temperature = getTemperature();
-    out_sensor_data->humidity = getHumidity();
+    /* Temperature changes 0 - 40 */
+    out_sensor_data->temperature = rand()%41;
+
+    /* Humidity changes in 0 - 100 */
+    out_sensor_data->humidity = rand()%101;
+
     return SSE_E_OK;
 }
 
@@ -86,6 +80,7 @@ upload_sensor_data(sse_int in_timer_id, sse_pointer in_user_data)
         MOAT_LOG_ERROR(TAG, "moat_object_new() has failed.");
         return sse_true;
     }
+    
     moat_object_add_float_value(object, "temperature", sensor_data.temperature, sse_false);
     moat_object_add_float_value(object, "humidity", sensor_data.humidity, sse_false);
     moat_object_add_int64_value(object, "timestamp", moat_get_timestamp_msec(), sse_false);
