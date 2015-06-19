@@ -20,13 +20,13 @@ session.log(TAG, 'Start!');
 var objects = clientRequest.objects;
 if (objects.length === 0) {
   session.log('No objects are received');
-  throw "No objects are received!";
+  throw 'No objects are received!';
 }
 
 var datum = objects[0];
 session.log(TAG, JSON.stringify(datum));
 
-sendData2CloudWatch(aws_endpoint, aws_access_key_id, aws_secret_access_key);
+sendData2CloudWatch();
 
 /**
  * Returns an ISO8601 formatted date string.
@@ -63,26 +63,45 @@ function fixedEncodeURIComponent(str) {
   });
 }
 
-function sendData2CloudWatch(endpoint, access_id, secret_key) {
+/**
+ * Returns a string joined array elements with '&'
+ * 
+ * @return String 
+ * @example
+ * concatArrayElementsWithAmp(array) // 'ement1Str&ement2Str&element3Str'
+ */
+ function concatArrayElementsWithAmp(in_array){
+    var str;
+    in_array.forEach(function(element, index) {
+      if(index === 0){
+        str = element[1];
+      } else {
+        str += '&' + element[1];
+      }
+    });
+    return str;
+  }
+
+function sendData2CloudWatch() {
   var timestamp = isoDateString(new Date(datum.timestamp));     
   var params = [
-    ["Action", "PutMetricData"],
-    ["Namespace", "SSCloudWatch"],
-    ["AWSAccessKeyId", access_id],
-    ["SignatureMethod", "HmacSHA256"],
-    ["SignatureVersion", 2],
-    ["Version", "2010-08-01"],
-    ["Timestamp", timestamp],
-    ["MetricData.member.1.MetricName", "temperature"],
-    ["MetricData.member.1.Unit", "Count"],
-    ["MetricData.member.1.Value", datum.temperature],
-    ["MetricData.member.1.Dimensions.member.1.Name", "Project"],
-    ["MetricData.member.1.Dimensions.member.1.Value", "test"],
-    ["MetricData.member.2.MetricName", "humidity"],
-    ["MetricData.member.2.Unit", "Count"],
-    ["MetricData.member.2.Value", datum.humidity],
-    ["MetricData.member.2.Dimensions.member.1.Name", "Project"],
-    ["MetricData.member.2.Dimensions.member.1.Value", "test"]
+    ['Action', 'PutMetricData'],
+    ['Namespace', 'SSCloudWatch'],
+    ['AWSAccessKeyId', aws_access_key_id],
+    ['SignatureMethod', 'HmacSHA256'],
+    ['SignatureVersion', 2],
+    ['Version', '2010-08-01'],
+    ['Timestamp', timestamp],
+    ['MetricData.member.1.MetricName', 'temperature'],
+    ['MetricData.member.1.Unit', 'Count'],
+    ['MetricData.member.1.Value', datum.temperature],
+    ['MetricData.member.1.Dimensions.member.1.Name', 'Project'],
+    ['MetricData.member.1.Dimensions.member.1.Value', 'test'],
+    ['MetricData.member.2.MetricName', 'humidity'],
+    ['MetricData.member.2.Unit', 'Count'],
+    ['MetricData.member.2.Value', datum.humidity],
+    ['MetricData.member.2.Dimensions.member.1.Name', 'Project'],
+    ['MetricData.member.2.Dimensions.member.1.Value', 'test']
   ];
   
   params.forEach(function(element, index) {
@@ -92,37 +111,29 @@ function sendData2CloudWatch(endpoint, access_id, secret_key) {
   });    
   params.sort();
   
-  var canonical_querystring = "";
-  params.forEach(function(element, index) {
-    canonical_querystring += '&' + element[1];
-  });
+  var canonical_querystring = '';
+  canonical_qurystring = concatArrayElementsWithAmp(params);
   
-  // Remove redundant initial '&'
-  canonical_querystring = canonical_querystring.substr(1);
-  
-  var string_to_sign = "GET" + "\n" + endpoint + "\n" + "/" + "\n" + canonical_querystring;
-  var signature_hex = session.hmac('SHA256', 'plain', secret_key, string_to_sign);
+  var string_to_sign = 'GET' + '\n' + aws_endpoint + '\n' + '/' + '\n' + canonical_querystring;
+  var signature_hex = session.hmac('SHA256', 'plain', aws_secret_access_key, string_to_sign);
   var signature = session.hex2b64(signature_hex);
   
   // Add signature into params
-  params.push(["Signature", "Signature=" + fixedEncodeURIComponent(signature)]);
+  params.push(['Signature', 'Signature=' + fixedEncodeURIComponent(signature)]);
   params.sort();
   
   // Generagte querystring
-  var querystring = "";
-  params.forEach(function(element, index) {
-    querystring += '&' + element[1];
-  });
-  querystring = querystring.substr(1);
-  
-  var url_and_query = "https://" + endpoint + "/?" + querystring;
-  session.log(TAG,"url_and_query: " + url_and_query);
+  var querystring = '';
+  querystring = concatArrayElementsWithAmp(params);
+
+  var url_and_query = 'https://' + aws_endpoint + '/?' + querystring;
+  session.log(TAG,'url_and_query: ' + url_and_query);
   
   // HTTP Access
   var resp = session.fetchUrlSync(url_and_query, {method: 'GET'});
   if (parseInt(resp.responseCode / 100) === 2) {
     session.log(TAG, 'Success!');
   } else {
-    throw 'Failed to upload data: responseCode=' + resp.responseCode;
+    throw 'Failed to upload data: responseCode=' + resp.responseCode + '\n responseContent: ' + JSON.stringify(resp.content);
   }
 }  

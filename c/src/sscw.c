@@ -34,15 +34,13 @@ typedef struct {
   Moat moat;
 } UserContext;
   
-static sse_int
+static void
 get_sensor_data(SensingData* out_sensor_data){
   /* Temperature changes 0 - 40 */
-  out_sensor_data->temperature = rand()%41;
+  out_sensor_data->temperature = rand() % 41;
   
   /* Humidity changes in 0 - 100 */
-  out_sensor_data->humidity = rand()%101;
-  
-  return SSE_E_OK;
+  out_sensor_data->humidity = rand() % 101;
 }
   
 static void
@@ -57,7 +55,6 @@ upload_sensor_data_result_proc(Moat in_moat, sse_char *in_urn, sse_char *in_mode
   
 static sse_bool
 upload_sensor_data(sse_int in_timer_id, sse_pointer in_user_data){
-  sse_int err;
   sse_int urn_err;
   sse_int request_id;
   MoatObject* object = NULL;
@@ -65,12 +62,7 @@ upload_sensor_data(sse_int in_timer_id, sse_pointer in_user_data){
   UserContext* ctx = (UserContext*)in_user_data;
   sse_char urn[512];
       
-  err = get_sensor_data(&sensor_data);
-      
-  if (err != SSE_E_OK) {
-    MOAT_LOG_ERROR(TAG, "get_sensor_data() has failed with [%d].", err);
-    return sse_true;
-  }
+  get_sensor_data(&sensor_data);
       
   object = moat_object_new();
   if (object == NULL) {
@@ -158,7 +150,7 @@ moat_app_main(sse_int in_argc, sse_char *argv[]){
       
   return SSE_E_OK;
       
- error_exit:
+  error_exit:
   if (timer != NULL) {
     moat_timer_free(timer);
   }
