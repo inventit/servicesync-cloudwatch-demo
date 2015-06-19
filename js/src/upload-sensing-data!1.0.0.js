@@ -113,9 +113,10 @@ function sendData2CloudWatch() {
 
   //Generate signature 
   var canonical_querystring = '';
-  canonical_qurystring = concatArrayElementsWithAmp(params);
+  canonical_querystring = concatArrayElementsWithAmp(params);
 
   var string_to_sign = 'GET' + '\n' + aws_endpoint + '\n' + '/' + '\n' + canonical_querystring;
+  session.log('string_to_sign: ' + string_to_sign);
   var signature_hex = session.hmac('SHA256', 'plain', aws_secret_access_key, string_to_sign);
   var signature = session.hex2b64(signature_hex);
   
