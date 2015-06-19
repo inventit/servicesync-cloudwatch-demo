@@ -110,10 +110,11 @@ function sendData2CloudWatch() {
     element[1] = element.join('=');
   });    
   params.sort();
-  
+
+  //Generate signature 
   var canonical_querystring = '';
   canonical_qurystring = concatArrayElementsWithAmp(params);
-  
+
   var string_to_sign = 'GET' + '\n' + aws_endpoint + '\n' + '/' + '\n' + canonical_querystring;
   var signature_hex = session.hmac('SHA256', 'plain', aws_secret_access_key, string_to_sign);
   var signature = session.hex2b64(signature_hex);
