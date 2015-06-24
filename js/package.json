@@ -13,7 +13,7 @@
     "url": "git@bitbucket.org:inventit/servicesync-cloudwatch-demo.git"
   },
   "devDependencies": {
-    "moat": "https://github.com/inventit/moatjs-stub.git#develop",
+    "moat": "https://github.com/inventit/moatjs-stub.git",
     "dotenv": "^1.1.0",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "~0.6.0",
@@ -47,12 +47,5 @@
       }
     }
   },
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC"
+  "license": "MIT"
 }

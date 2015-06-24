@@ -79,10 +79,9 @@ var aws_endpoint = '@@AWS_ENDPOINT',
 
 ### Packaging
 
-デプロイ可能な配布パッケージを作成します。
+デプロイ可能な配布パッケージを作成します。以下のコマンドを実行すると、`sscw-<version>.zip`が作成されます。
 
-    cd build
-    npm pack
+    grunt pack
 
 ### Cleaning
 
