@@ -62,7 +62,16 @@ module.exports = function(grunt) {
         ]
       }      
     },
-    clean: ["./build", "./docs"]
+    compress: {
+      main: {
+        options: {
+          mode: 'zip',
+          archive: '<%= pkg.name %>-<%= pkg.version %>.zip'
+        },
+        files: [{ expand: true, src: '**', cwd: './build' }]
+      }
+    },
+    clean: ["./build", "./docs", "./*.zip"]
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -71,9 +80,11 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-compress');
   grunt.loadNpmTasks('grunt-replace');
 
   grunt.registerTask('build', ['jshint', 'nodeunit', 'uglify', 'copy:pack', 'replace']);
+  grunt.registerTask('pack', ['clean', 'build', 'compress']);
   grunt.registerTask('default', ['build', 'jsdoc']);
 
 };
