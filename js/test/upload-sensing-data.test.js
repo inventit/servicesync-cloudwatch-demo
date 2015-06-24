@@ -1,6 +1,6 @@
 var nodeUnit = require('nodeunit'),
     sinon = require('sinon'),
-    script = require('path').resolve('./src/upload-sensing-data_1.0.0.js'),
+    script = require('path').resolve('./src/upload-sensing-data.js'),
     moat = require('moat');
 
 module.exports = nodeUnit.testCase({
