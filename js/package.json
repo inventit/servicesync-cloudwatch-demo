@@ -12,10 +12,8 @@
     "type": "git",
     "url": "git@bitbucket.org:inventit/servicesync-cloudwatch-demo.git"
   },
-  "dependencies": {
-    "moat": "https://github.com/inventit/moatjs-stub.git#develop"
-  },
   "devDependencies": {
+    "moat": "https://github.com/inventit/moatjs-stub.git#develop",
     "dotenv": "^1.1.0",
     "grunt": "^0.4.5",
     "grunt-contrib-clean": "~0.6.0",
