@@ -27,7 +27,7 @@ ${MOATJS_ROOT}
 
 このパッケージは、以下のスクリプトを含んでいます。
 
-- `upload-sensing-data!1.0.0.js`: ゲートウェイアプリからアップロードされたデータを、Amazon CloudWatchにポストするスクリプトです。
+- `upload-sensing-data.js`: ゲートウェイアプリからアップロードされたデータを、Amazon CloudWatchにポストするスクリプトです。
 
 `test`ディレクトリにある、*.test.js は、ユニットテストのスクリプトです。
 
@@ -65,32 +65,32 @@ var aws_endpoint = '@@AWS_ENDPOINT',
 
 ## コマンド
 
-### Set up
+### セットアップ
 
 依存するパッケージをインストールします。最初に必ず実行する必要があります。
 
     npm install
 
-### Build & Unit Tests
+### ビルドとユニットテスト
 
 スクリプトの難読化やユニットテストを実行します。このコマンドを実行すると、ユニットテストやスクリプトの難読化を行った後、パッケージに含めるファイルを、`build`ディレクトリにコピーします。
 
     grunt
 
-### Packaging
+### パッケージの作成
 
 デプロイ可能な配布パッケージを作成します。以下のコマンドを実行すると、`sscw-<version>.zip`が作成されます。
 
     grunt pack
 
-### Cleaning
+### クリーン
 
 `grunt`コマンドで生成された中間生成物をクリーンします。
 
     grunt clean
 
-## Change History
+## 変更履歴
 
-### 0.0.0 Jun MM, 2015
+### 1.0.0 Jun 26, 2015
 
-- Initial Release
+- イニシャルリリース
