@@ -1,0 +1,25 @@
+{
+  "name" : "sscw",
+  "version" : "1.0.0",
+  "description" : "ServiceSync CloudWatch demo project",
+  "maintainers" : [{
+    "name" : "Inventit",
+    "mail" : "egypt@yourinventit.com"
+  }],
+  "bugs" : {
+    "mail" : "egypt@yourinventit.com"
+  },
+  "dependencies": {
+    "moat": ">=1.0.0 <2.0.0"
+  },
+  "models" : {
+    "SensingData": {
+      "array": false,
+      "attributes" : {
+        "temperature": {"type": "float"},
+        "humidity": {"type": "float"},
+        "timestamp": {"type": "int64"}
+      }
+    }
+  }
+}

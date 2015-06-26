@@ -1,0 +1,6 @@
+Gruntfile.js
+Rakefile
+*.test.js
+*.tgz
+*.zip
+.npmignore
