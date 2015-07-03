@@ -79,4 +79,4 @@ $ make package
 ### 1.0.0 Jun 26, 2015
 
 - イニシャルリリース
-- [Hotfix](Jul 3, 2015) package.jsonの不具合修正
+- <Hotfix> (Jul 3, 2015) package.jsonの不具合修正
