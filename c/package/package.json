@@ -12,6 +12,7 @@
   "dependencies": {
     "moat": ">=1.0.0 <2.0.0"
   },
+  "main" : "sscw.so",
   "models" : {
     "SensingData": {
       "array": false,
