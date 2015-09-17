@@ -53,7 +53,7 @@ ${MOATC_ROOT}
 ##token.binの生成と格納
 ファイル名1404886824665-token.binは異なりますので、適宜読み替えてください。
 $ cd iidn-cli
-$ iidn tokengen dominica
+$ iidn tokengen sscw 
 '1404886824665-token.bin'が生成されます。
 
 $ mv 1404886824665-token.bin ${MOATC_ROOT}/package/token.bin
